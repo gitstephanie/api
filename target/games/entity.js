@@ -30,7 +30,7 @@ __decorate([
 ], Game.prototype, "color", void 0);
 __decorate([
     class_validator_1.IsJSON(),
-    typeorm_1.Column('text', { nullable: false }),
+    typeorm_1.Column('json', { nullable: false }),
     __metadata("design:type", Object)
 ], Game.prototype, "board", void 0);
 Game = __decorate([
