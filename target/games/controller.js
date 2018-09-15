@@ -14,12 +14,19 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const routing_controllers_1 = require("routing-controllers");
 const entity_1 = require("./entity");
+const logic_1 = require("./logic");
 let GameController = class GameController {
     async getGames() {
         const games = await entity_1.default.find();
+        if (!games)
+            throw new routing_controllers_1.NotFoundError(`Games not found`);
         return { games };
     }
-    createGame(game) {
+    createGame(name) {
+        const game = new entity_1.default;
+        game.name = name;
+        game.color = logic_1.randomColor();
+        game.board = logic_1.defaultBoard;
         return game.save();
     }
     async updateGame(id, update) {
@@ -38,15 +45,15 @@ __decorate([
 __decorate([
     routing_controllers_1.Post('/games'),
     routing_controllers_1.HttpCode(201),
-    __param(0, routing_controllers_1.Body()),
+    __param(0, routing_controllers_1.BodyParam('name', { required: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [entity_1.default]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], GameController.prototype, "createGame", null);
 __decorate([
     routing_controllers_1.Put('/games/:id'),
     __param(0, routing_controllers_1.Param('id')),
-    __param(1, routing_controllers_1.Body()),
+    __param(1, routing_controllers_1.Body({ validate: true })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)

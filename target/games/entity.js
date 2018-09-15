@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 const BaseEntity_1 = require("typeorm/repository/BaseEntity");
 const class_validator_1 = require("class-validator");
+const logic_1 = require("./logic");
 let Game = class Game extends BaseEntity_1.BaseEntity {
 };
 __decorate([
@@ -25,13 +26,13 @@ __decorate([
 ], Game.prototype, "name", void 0);
 __decorate([
     class_validator_1.IsString(),
-    typeorm_1.Column('text', { nullable: false }),
+    typeorm_1.Column('text', { nullable: true }),
     __metadata("design:type", String)
 ], Game.prototype, "color", void 0);
 __decorate([
     class_validator_1.IsJSON(),
-    typeorm_1.Column('json', { nullable: false }),
-    __metadata("design:type", Object)
+    typeorm_1.Column('json', { default: logic_1.defaultBoard, nullable: true }),
+    __metadata("design:type", Array)
 ], Game.prototype, "board", void 0);
 Game = __decorate([
     typeorm_1.Entity()
