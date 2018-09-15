@@ -1,6 +1,6 @@
-import { JsonController, Get, Post, HttpCode, Body, Put, Param, BodyParam, NotFoundError } from 'routing-controllers'
+import { JsonController, Get, Post, HttpCode, Body, Put, BodyParam, Param, NotFoundError, BadRequestError } from 'routing-controllers'
 import Game from './entity'
-import {randomColor, defaultBoard} from './logic'
+import {randomColor, defaultBoard, colors, moves} from './logic'
 
 @JsonController()
 export default class GameController {
@@ -15,9 +15,8 @@ export default class GameController {
     @Post('/games')
     @HttpCode (201)
     createGame(
-        @BodyParam('name', {required: true}) name: string
+        @BodyParam('name', {required: true}) game: Game
     ) {
-        const game = new Game
         game.name = name
         game.color = randomColor()
         game.board = defaultBoard
@@ -27,15 +26,15 @@ export default class GameController {
     @Put('/games/:id')
     async updateGame(
         @Param('id') id: number,
-        @Body({validate: true}) update: Partial<Game>
+        @Body({required: true}) update: Partial<Game>
     ) {
         const game = await Game.findOne(id)
         if (!game) throw new NotFoundError('Cannot find game')
 
+        if(moves(game.board, update.board) > 1) throw new BadRequestError (`Only one move allowed`)
+
+        if(update.color && !colors.includes[update.color]) throw new BadRequestError (`Color not allowed`)
+
         return Game.merge(game, update).save()
     }
-
-    //@Patch('/games/:id')
-    //return Game.patch
 }
-

@@ -4,7 +4,7 @@ export const defaultBoard = [
 	['o', 'o', 'o']
 ];
 
-const colors = ['red', 'blue', 'green', 'yellow', 'magenta']
+export const colors = ['red', 'blue', 'green', 'yellow', 'magenta']
 
 export const randomColor = () => colors[Math.floor(Math.random() * 5)]
 

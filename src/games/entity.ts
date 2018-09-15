@@ -8,18 +8,22 @@ export default class Game extends BaseEntity {
 
   @PrimaryGeneratedColumn()
   id?: number
+  readonly: true
+  unique: true
+
 
   @IsString()
-    @Column('text', {nullable:false})
+    @Column('text')
     name: string
     
   @IsString()
-    @Column('text', {nullable:true})
+    @Column('text')
     color: string
 
   @IsJSON()
     @Column('json',
-    {default: defaultBoard, nullable:true})
+    {default: defaultBoard})
+    // I don't think this is the way to go, but now it accepts the defaultBoard:
     board: string[][]
 
 }

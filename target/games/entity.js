@@ -21,17 +21,17 @@ __decorate([
 ], Game.prototype, "id", void 0);
 __decorate([
     class_validator_1.IsString(),
-    typeorm_1.Column('text', { nullable: false }),
+    typeorm_1.Column('text'),
     __metadata("design:type", String)
 ], Game.prototype, "name", void 0);
 __decorate([
     class_validator_1.IsString(),
-    typeorm_1.Column('text', { nullable: true }),
+    typeorm_1.Column('text'),
     __metadata("design:type", String)
 ], Game.prototype, "color", void 0);
 __decorate([
     class_validator_1.IsJSON(),
-    typeorm_1.Column('json', { default: logic_1.defaultBoard, nullable: true }),
+    typeorm_1.Column('json', { default: logic_1.defaultBoard }),
     __metadata("design:type", Array)
 ], Game.prototype, "board", void 0);
 Game = __decorate([

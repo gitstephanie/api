@@ -22,8 +22,7 @@ let GameController = class GameController {
             throw new routing_controllers_1.NotFoundError(`Games not found`);
         return { games };
     }
-    createGame(name) {
-        const game = new entity_1.default;
+    createGame(game) {
         game.name = name;
         game.color = logic_1.randomColor();
         game.board = logic_1.defaultBoard;
@@ -33,6 +32,10 @@ let GameController = class GameController {
         const game = await entity_1.default.findOne(id);
         if (!game)
             throw new routing_controllers_1.NotFoundError('Cannot find game');
+        if (logic_1.moves(game.board, update.board) > 1)
+            throw new routing_controllers_1.BadRequestError(`Only one move allowed`);
+        if (update.color && !logic_1.colors.includes[update.color])
+            throw new routing_controllers_1.BadRequestError(`Color not allowed`);
         return entity_1.default.merge(game, update).save();
     }
 };
@@ -47,13 +50,13 @@ __decorate([
     routing_controllers_1.HttpCode(201),
     __param(0, routing_controllers_1.BodyParam('name', { required: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [entity_1.default]),
     __metadata("design:returntype", void 0)
 ], GameController.prototype, "createGame", null);
 __decorate([
     routing_controllers_1.Put('/games/:id'),
     __param(0, routing_controllers_1.Param('id')),
-    __param(1, routing_controllers_1.Body({ validate: true })),
+    __param(1, routing_controllers_1.Body({ required: true })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
