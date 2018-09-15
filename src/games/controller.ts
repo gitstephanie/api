@@ -31,7 +31,7 @@ export default class GameController {
         const game = await Game.findOne(id)
         if (!game) throw new NotFoundError('Cannot find game')
 
-        if(moves(game.board, update.board) > 1) throw new BadRequestError (`Only one move allowed`)
+        if(update.board && moves(game.board, update.board) > 1) throw new BadRequestError (`Only one move allowed`)
 
         if(update.color && !colors.includes[update.color]) throw new BadRequestError (`Color not allowed`)
 
